@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduCore - College Inventory, Student, Faculty & Task Management System</title>
+    
+    <!-- Design & Layout Stylesheets -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/kanban.css">
+</head>
+<body>
+    <div class="app-wrapper">
+        <!-- Sidebar Backdrop for Mobile -->
+        <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+        <!-- --- SIDEBAR NAVIGATION --- -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo-icon">🎓</div>
+                <div class="sidebar-brand-text">
+                    <span class="brand-title">EduCore System</span>
+                    <span class="brand-subtitle">Campus Management</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section-title">Core Management</div>
+                <a href="#dashboard" class="nav-item active" data-nav-target="dashboard">
+                    <span class="nav-icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#students" class="nav-item" data-nav-target="students">
+                    <span class="nav-icon">👨‍🎓</span>
+                    <span>Students</span>
+                    <span id="badgeStudentCount" class="nav-badge">0</span>
+                </a>
+                <a href="#faculty" class="nav-item" data-nav-target="faculty">
+                    <span class="nav-icon">👨‍🏫</span>
+                    <span>Faculty & Staff</span>
+                    <span id="badgeFacultyCount" class="nav-badge">0</span>
+                </a>
+                <a href="#inventory" class="nav-item" data-nav-target="inventory">
+                    <span class="nav-icon">📦</span>
+                    <span>Physical Inventory</span>
+                    <span id="badgeInventoryCount" class="nav-badge">0</span>
+                </a>
+
+                <div class="nav-section-title">Academics & Workflow</div>
+                <a href="#tasks" class="nav-item" data-nav-target="tasks">
+                    <span class="nav-icon">📋</span>
+                    <span>Academic Tasks</span>
+                    <span id="badgeTaskCount" class="nav-badge badge-danger">0</span>
+                </a>
+                <a href="#assignments" class="nav-item" data-nav-target="assignments">
+                    <span class="nav-icon">📚</span>
+                    <span>Course Assignments</span>
+                    <span id="badgeAssignmentCount" class="nav-badge">0</span>
+                </a>
+
+                <div class="nav-section-title">System & Storage</div>
+                <a href="#data-manager" class="nav-item" data-nav-target="data-manager">
+                    <span class="nav-icon">💾</span>
+                    <span>Data & Backups</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-avatar-sm">AD</div>
+                <div class="user-meta">
+                    <span class="user-name">Administrator</span>
+                    <span class="user-role">Dept. Controller</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- --- MAIN APPLICATION SHELL --- -->
+        <div class="main-wrapper">
+            <!-- Top Sticky Header -->
+            <header class="top-header">
+                <div class="header-left">
+                    <button id="mobileMenuToggle" class="mobile-menu-btn" aria-label="Toggle navigation">☰</button>
+                    <div class="header-title-area">
+                        <h1 id="headerPageTitle" class="page-title">Administrative Dashboard</h1>
+                        <span id="headerPageSubtitle" class="page-subtitle">Overview of students, faculty, inventory, tasks & assignments</span>
+                    </div>
+                </div>
+
+                <div class="header-right">
+                    <div class="search-box-wrapper">
+                        <span class="search-icon-inside">🔍</span>
+                        <input type="text" id="globalSearchInput" class="search-input" placeholder="Quick search across system..." autocomplete="off">
+                    </div>
+                    <button id="themeToggleBtn" class="header-btn" title="Toggle Light / Dark Mode">🌙</button>
+                </div>
+            </header>
+
+            <!-- Main Dynamic View Container -->
+            <main class="content-body">
+                
+                <!-- ==================== 1. DASHBOARD VIEW ==================== -->
+                <section id="view-dashboard" class="view-section active animate-fade-in">
+                    <!-- KPI Metric Cards -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon-wrapper primary">👨‍🎓</div>
+                            <div class="stat-details">
+                                <span id="statTotalStudents" class="stat-value">0</span>
+                                <span class="stat-label">Enrolled Students</span>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon-wrapper info">👨‍🏫</div>
+                            <div class="stat-details">
+                                <span id="statTotalFaculty" class="stat-value">0</span>
+                                <span class="stat-label">Faculty Members</span>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon-wrapper success">📦</div>
+                            <div class="stat-details">
+                                <span id="statTotalInventory" class="stat-value">0</span>
+                                <span class="stat-label">Inventory Assets</span>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon-wrapper warning">⚠️</div>
+                            <div class="stat-details">
+                                <span id="statLowStock" class="stat-value text-warning">0</span>
+                                <span class="stat-label">Low Stock Alerts</span>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon-wrapper danger">📋</div>
+                            <div class="stat-details">
+                                <span id="statPendingTasks" class="stat-value">0</span>
+                                <span class="stat-label">Pending Tasks</span>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon-wrapper primary">📚</div>
+                            <div class="stat-details">
+                                <span id="statActiveAssignments" class="stat-value">0</span>
+                                <span class="stat-label">Active Assignments</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Grid -->
+                    <div class="charts-grid">
+                        <!-- Department Students Bar Chart -->
+                        <div class="card-panel">
+                            <div class="panel-header">
+                                <div>
+                                    <h2 class="panel-title">👥 Student Enrollment by Department</h2>
+                                    <span class="panel-subtitle">Distribution of active students across academic faculties</span>
+                                </div>
+                            </div>
+                            <div class="chart-canvas-container">
+                                <canvas id="deptStudentsChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Inventory Stock Doughnut Chart -->
+                        <div class="card-panel">
+                            <div class="panel-header">
+                                <div>
+                                    <h2 class="panel-title">📦 Inventory Stock Status</h2>
+                                    <span class="panel-subtitle">Asset health & replenishment levels</span>
+                                </div>
+                            </div>
+                            <div class="chart-canvas-container">
+                                <canvas id="inventoryStatusChart"></canvas>
+                            </div>
+                            <div id="inventoryChartLegend"></div>
+                        </div>
+                    </div>
+
+                    <!-- Lower Split Grid: Recent Activity & Stock Alerts -->
+                    <div class="charts-grid" style="grid-template-columns: 1.5fr 1fr;">
+                        <!-- Recent Activity Feed -->
+                        <div class="card-panel">
+                            <div class="panel-header">
+                                <h2 class="panel-title">⚡ Recent System Activities</h2>
+                                <span class="panel-subtitle">Real-time audit log</span>
+                            </div>
+                            <div id="recentActivityFeed" class="activity-list"></div>
+                        </div>
+
+                        <!-- Low Stock Critical Warnings -->
+                        <div class="card-panel">
+                            <div class="panel-header">
+                                <h2 class="panel-title">🚨 Inventory Reorder Alerts</h2>
+                                <span class="panel-subtitle">Items requiring replenishment</span>
+                            </div>
+                            <div id="dashboardStockAlerts"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ==================== 2. STUDENTS VIEW ==================== -->
+                <section id="view-students" class="view-section animate-fade-in">
+                    <div class="toolbar-card">
+                        <div class="toolbar-left">
+                            <input type="text" id="studentSearchInput" class="input-filter" placeholder="Search by name, roll no, email..." style="min-width: 220px;">
+                            
+                            <select id="studentDeptFilter" class="input-filter">
+                                <option value="all">All Departments</option>
+                                <option value="Computer Science">Computer Science</option>
+                                <option value="Electrical Engineering">Electrical Engineering</option>
+                                <option value="Mechanical Engineering">Mechanical Engineering</option>
+                                <option value="Civil Engineering">Civil Engineering</option>
+                                <option value="Business Administration">Business Administration</option>
+                            </select>
+
+                            <select id="studentYearFilter" class="input-filter">
+                                <option value="all">All Years</option>
+                                <option value="1st Year">1st Year</option>
+                                <option value="2nd Year">2nd Year</option>
+                                <option value="3rd Year">3rd Year</option>
+                                <option value="4th Year">4th Year</option>
+                            </select>
+
+                            <select id="studentStatusFilter" class="input-filter">
+                                <option value="all">All Statuses</option>
+                                <option value="Active">Active</option>
+                                <option value="On Leave">On Leave</option>
+                                <option value="Graduated">Graduated</option>
+                            </select>
+                        </div>
+
+                        <div class="toolbar-right">
+                            <button id="btnExportStudents" class="btn btn-secondary">📥 Export CSV</button>
+                            <button id="btnAddStudent" class="btn btn-primary">➕ Enroll Student</button>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Roll No / ID</th>
+                                        <th>Student Name</th>
+                                        <th>Department</th>
+                                        <th>Year / Sem</th>
+                                        <th>CGPA</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="studentsTableBody"></tbody>
+                            </table>
+                        </div>
+                        <div class="table-footer">
+                            <span id="studentTotalDisplay">Loading records...</span>
+                            <span class="text-xs text-muted">Real-time local database</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ==================== 3. FACULTY VIEW ==================== -->
+                <section id="view-faculty" class="view-section animate-fade-in">
+                    <div class="toolbar-card">
+                        <div class="toolbar-left">
+                            <input type="text" id="facultySearchInput" class="input-filter" placeholder="Search faculty name, specialization..." style="min-width: 220px;">
+                            
+                            <select id="facultyDeptFilter" class="input-filter">
+                                <option value="all">All Departments</option>
+                                <option value="Computer Science">Computer Science</option>
+                                <option value="Electrical Engineering">Electrical Engineering</option>
+                                <option value="Mechanical Engineering">Mechanical Engineering</option>
+                                <option value="Civil Engineering">Civil Engineering</option>
+                                <option value="Business Administration">Business Administration</option>
+                            </select>
+
+                            <select id="facultyDesignationFilter" class="input-filter">
+                                <option value="all">All Designations</option>
+                                <option value="Professor & HOD">Professor & HOD</option>
+                                <option value="Associate Professor">Associate Professor</option>
+                                <option value="Assistant Professor">Assistant Professor</option>
+                                <option value="Lecturer">Lecturer</option>
+                            </select>
+
+                            <select id="facultyStatusFilter" class="input-filter">
+                                <option value="all">All Statuses</option>
+                                <option value="Active">Active</option>
+                                <option value="On Sabbatical">On Sabbatical</option>
+                            </select>
+                        </div>
+
+                        <div class="toolbar-right">
+                            <button id="btnExportFaculty" class="btn btn-secondary">📥 Export CSV</button>
+                            <button id="btnAddFaculty" class="btn btn-primary">➕ Add Faculty</button>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Faculty ID / Room</th>
+                                        <th>Name & Email</th>
+                                        <th>Department</th>
+                                        <th>Designation</th>
+                                        <th>Specialization</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="facultyTableBody"></tbody>
+                            </table>
+                        </div>
+                        <div class="table-footer">
+                            <span id="facultyTotalDisplay">Loading faculty...</span>
+                            <span class="text-xs text-muted">Official staff records</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ==================== 4. INVENTORY VIEW ==================== -->
+                <section id="view-inventory" class="view-section animate-fade-in">
+                    <div class="toolbar-card">
+                        <div class="toolbar-left">
+                            <input type="text" id="inventorySearchInput" class="input-filter" placeholder="Search item, location, supplier..." style="min-width: 220px;">
+                            
+                            <select id="inventoryCategoryFilter" class="input-filter">
+                                <option value="all">All Categories</option>
+                                <option value="Electronics & Computing">Electronics & Computing</option>
+                                <option value="Lab Equipment">Lab Equipment</option>
+                                <option value="Furniture">Furniture</option>
+                                <option value="Sports Equipment">Sports Equipment</option>
+                                <option value="Stationery & Books">Stationery & Books</option>
+                            </select>
+
+                            <select id="inventoryStockStatusFilter" class="input-filter">
+                                <option value="all">All Stock Statuses</option>
+                                <option value="In Stock">In Stock</option>
+                                <option value="Low Stock">Low Stock</option>
+                                <option value="Out of Stock">Out of Stock</option>
+                            </select>
+
+                            <select id="inventoryConditionFilter" class="input-filter">
+                                <option value="all">All Conditions</option>
+                                <option value="Good">Good</option>
+                                <option value="Fair">Fair</option>
+                                <option value="Needs Repair">Needs Repair</option>
+                            </select>
+                        </div>
+
+                        <div class="toolbar-right">
+                            <button id="btnExportInventory" class="btn btn-secondary">📥 Export CSV</button>
+                            <button id="btnAddInventory" class="btn btn-primary">➕ Add Asset</button>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Asset Code</th>
+                                        <th>Item Name</th>
+                                        <th>Category</th>
+                                        <th>Location / Room</th>
+                                        <th>Available / Total</th>
+                                        <th>Condition</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="inventoryTableBody"></tbody>
+                            </table>
+                        </div>
+                        <div class="table-footer">
+                            <span id="inventoryTotalDisplay">Loading inventory items...</span>
+                            <span class="text-xs text-muted">Real-time physical asset tracker</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ==================== 5. TASKS VIEW ==================== -->
+                <section id="view-tasks" class="view-section animate-fade-in">
+                    <div class="toolbar-card">
+                        <div class="toolbar-left">
+                            <div class="view-toggle-group">
+                                <button id="btnTaskTableView" class="view-toggle-btn active">📑 Table</button>
+                                <button id="btnTaskKanbanView" class="view-toggle-btn">📌 Kanban Board</button>
+                            </div>
+
+                            <input type="text" id="taskSearchInput" class="input-filter" placeholder="Search tasks, assignees..." style="min-width: 180px;">
+                            
+                            <select id="taskPriorityFilter" class="input-filter">
+                                <option value="all">All Priorities</option>
+                                <option value="High">High Priority</option>
+                                <option value="Medium">Medium Priority</option>
+                                <option value="Low">Low Priority</option>
+                            </select>
+
+                            <select id="taskCategoryFilter" class="input-filter">
+                                <option value="all">All Categories</option>
+                                <option value="Academic">Academic</option>
+                                <option value="Exam">Exam</option>
+                                <option value="Administrative">Administrative</option>
+                                <option value="Maintenance">Maintenance</option>
+                                <option value="Event">Event</option>
+                            </select>
+
+                            <select id="taskStatusFilter" class="input-filter">
+                                <option value="all">All Statuses</option>
+                                <option value="Pending">Pending</option>
+                                <option value="In Progress">In Progress</option>
+                                <option value="Completed">Completed</option>
+                            </select>
+                        </div>
+
+                        <div class="toolbar-right">
+                            <button id="btnExportTasks" class="btn btn-secondary">📥 Export CSV</button>
+                            <button id="btnAddTask" class="btn btn-primary">➕ Create Task</button>
+                        </div>
+                    </div>
+
+                    <!-- Table View Container -->
+                    <div id="tasksTableViewContainer" class="table-container">
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Task ID / Priority</th>
+                                        <th>Title & Details</th>
+                                        <th>Category</th>
+                                        <th>Assigned To</th>
+                                        <th>Due Date</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tasksTableBody"></tbody>
+                            </table>
+                        </div>
+                        <div class="table-footer">
+                            <span id="tasksTotalDisplay">Loading tasks...</span>
+                            <span class="text-xs text-muted">Department workflows</span>
+                        </div>
+                    </div>
+
+                    <!-- Kanban Board View Container -->
+                    <div id="tasksKanbanViewContainer" class="kanban-board" style="display: none;">
+                        <!-- Column 1: Pending -->
+                        <div class="kanban-column">
+                            <div class="kanban-column-header">
+                                <span class="kanban-column-title">⏳ Pending</span>
+                                <span id="kanbanCountPending" class="kanban-count-badge">0</span>
+                            </div>
+                            <div id="kanbanPendingCards" class="kanban-cards-container" data-status-column="Pending"></div>
+                        </div>
+
+                        <!-- Column 2: In Progress -->
+                        <div class="kanban-column">
+                            <div class="kanban-column-header">
+                                <span class="kanban-column-title">⚡ In Progress</span>
+                                <span id="kanbanCountInProgress" class="kanban-count-badge">0</span>
+                            </div>
+                            <div id="kanbanInProgressCards" class="kanban-cards-container" data-status-column="In Progress"></div>
+                        </div>
+
+                        <!-- Column 3: Completed -->
+                        <div class="kanban-column">
+                            <div class="kanban-column-header">
+                                <span class="kanban-column-title">✅ Completed</span>
+                                <span id="kanbanCountCompleted" class="kanban-count-badge">0</span>
+                            </div>
+                            <div id="kanbanCompletedCards" class="kanban-cards-container" data-status-column="Completed"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ==================== 6. ASSIGNMENTS VIEW ==================== -->
+                <section id="view-assignments" class="view-section animate-fade-in">
+                    <div class="toolbar-card">
+                        <div class="toolbar-left">
+                            <input type="text" id="assignmentSearchInput" class="input-filter" placeholder="Search course, title, faculty..." style="min-width: 220px;">
+                            
+                            <select id="assignmentDeptFilter" class="input-filter">
+                                <option value="all">All Departments</option>
+                                <option value="Computer Science">Computer Science</option>
+                                <option value="Electrical Engineering">Electrical Engineering</option>
+                                <option value="Mechanical Engineering">Mechanical Engineering</option>
+                                <option value="Civil Engineering">Civil Engineering</option>
+                                <option value="Business Administration">Business Administration</option>
+                            </select>
+
+                            <select id="assignmentStatusFilter" class="input-filter">
+                                <option value="all">All Statuses</option>
+                                <option value="Active">Active</option>
+                                <option value="Closed">Closed</option>
+                            </select>
+                        </div>
+
+                        <div class="toolbar-right">
+                            <button id="btnExportAssignments" class="btn btn-secondary">📥 Export CSV</button>
+                            <button id="btnAddAssignment" class="btn btn-primary">➕ Publish Assignment</button>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Course Code</th>
+                                        <th>Assignment Title</th>
+                                        <th>Department & Instructor</th>
+                                        <th>Due Date & Marks</th>
+                                        <th>Submission Progress</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="assignmentsTableBody"></tbody>
+                            </table>
+                        </div>
+                        <div class="table-footer">
+                            <span id="assignmentsTotalDisplay">Loading course assignments...</span>
+                            <span class="text-xs text-muted">Evaluation & coursework</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ==================== 7. DATA BACKUPS & SETTINGS VIEW ==================== -->
+                <section id="view-data-manager" class="view-section animate-fade-in">
+                    <div class="charts-grid" style="grid-template-columns: 1fr 1fr;">
+                        <!-- JSON Backups & Data Integrity -->
+                        <div class="card-panel">
+                            <div class="panel-header">
+                                <h2 class="panel-title">💾 JSON Data Backup & Migration</h2>
+                                <span class="panel-subtitle">Export or restore full application state</span>
+                            </div>
+                            
+                            <p class="text-sm text-secondary" style="margin-bottom: 1.25rem; line-height: 1.5;">
+                                The entire College Management System operates on structured JSON data stored locally in your browser's persistent storage. You can download a complete backup at any time or restore previously saved data.
+                            </p>
+
+                            <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+                                <div style="padding: 1rem; background-color: var(--bg-tertiary); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: space-between;">
+                                    <div>
+                                        <div class="font-semibold text-sm">Download System Backup (JSON)</div>
+                                        <div class="text-xs text-muted">Exports all students, faculty, inventory, tasks & assignments</div>
+                                    </div>
+                                    <button id="btnExportFullJson" class="btn btn-primary btn-sm">📥 Export Backup</button>
+                                </div>
+
+                                <div style="padding: 1rem; background-color: var(--bg-tertiary); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: space-between;">
+                                    <div>
+                                        <div class="font-semibold text-sm">Restore from JSON File</div>
+                                        <div class="text-xs text-muted">Import a valid system JSON backup file</div>
+                                    </div>
+                                    <div>
+                                        <input type="file" id="jsonFileInput" accept=".json" style="display: none;">
+                                        <button id="btnImportFullJson" class="btn btn-secondary btn-sm">📤 Import Backup</button>
+                                    </div>
+                                </div>
+
+                                <div style="padding: 1rem; background-color: var(--bg-tertiary); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: space-between; border-left: 3px solid var(--warning);">
+                                    <div>
+                                        <div class="font-semibold text-sm">Reset to Demo Dataset</div>
+                                        <div class="text-xs text-muted">Re-populates all modules with original sample records</div>
+                                    </div>
+                                    <button id="btnResetDemoData" class="btn btn-danger btn-sm">🔄 Reset Demo Data</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Institution Settings -->
+                        <div class="card-panel">
+                            <div class="panel-header">
+                                <h2 class="panel-title">🏛️ Institution Configuration</h2>
+                                <span class="panel-subtitle">College metadata & academic term</span>
+                            </div>
+
+                            <form id="institutionSettingsForm">
+                                <div class="form-group" style="margin-bottom: 1rem;">
+                                    <label class="form-label required">College / Institute Name</label>
+                                    <input type="text" id="settingCollegeName" class="form-control" required>
+                                </div>
+
+                                <div class="form-grid" style="margin-bottom: 1rem;">
+                                    <div class="form-group">
+                                        <label class="form-label required">Academic Year</label>
+                                        <input type="text" id="settingAcademicYear" class="form-control" placeholder="e.g. 2023 - 2024" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label required">Current Term / Semester</label>
+                                        <input type="text" id="settingTerm" class="form-control" placeholder="e.g. Spring Semester" required>
+                                    </div>
+                                </div>
+
+                                <div style="margin-top: 1.5rem; text-align: right;">
+                                    <button type="submit" class="btn btn-primary">💾 Save Configuration</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- ==================== MODALS ==================== -->
+
+    <!-- 1. Student Create / Edit Modal -->
+    <div id="studentModal" class="modal-overlay">
+        <div class="modal-container modal-lg animate-scale-up">
+            <div class="modal-header">
+                <h3 id="studentModalTitle" class="modal-title">Enroll New Student</h3>
+                <button class="modal-close-btn" data-close-modal="studentModal">&times;</button>
+            </div>
+            <form id="studentForm">
+                <div class="modal-body">
+                    <input type="hidden" id="studentEditId">
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label required">Roll Number</label>
+                            <input type="text" id="studentRollNo" class="form-control" placeholder="e.g. CS2101" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label required">Full Name</label>
+                            <input type="text" id="studentName" class="form-control" placeholder="e.g. Aarav Sharma" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label required">Official Email</label>
+                            <input type="email" id="studentEmail" class="form-control" placeholder="e.g. name@college.edu" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Phone Number</label>
+                            <input type="text" id="studentPhone" class="form-control" placeholder="e.g. +91 98765 43210">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label required">Department</label>
+                            <select id="studentDepartment" class="form-control" required>
+                                <option value="Computer Science">Computer Science</option>
+                                <option value="Electrical Engineering">Electrical Engineering</option>
+                                <option value="Mechanical Engineering">Mechanical Engineering</option>
+                                <option value="Civil Engineering">Civil Engineering</option>
+                                <option value="Business Administration">Business Administration</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label required">Year of Study</label>
+                            <select id="studentYear" class="form-control" required>
+                                <option value="1st Year">1st Year</option>
+                                <option value="2nd Year">2nd Year</option>
+                                <option value="3rd Year">3rd Year</option>
+                                <option value="4th Year">4th Year</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Current Semester</label>
+                            <select id="studentSemester" class="form-control">
+                                <option value="1st Semester">1st Semester</option>
+                                <option value="2nd Semester">2nd Semester</option>
+                                <option value="3rd Semester">3rd Semester</option>
+                                <option value="4th Semester">4th Semester</option>
+                                <option value="5th Semester">5th Semester</option>
+                                <option value="6th Semester">6th Semester</option>
+                                <option value="7th Semester">7th Semester</option>
+                                <option value="8th Semester">8th Semester</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">CGPA / Grade (out of 10.0)</label>
+                            <input type="number" id="studentCgpa" class="form-control" step="0.01" min="0" max="10" placeholder="e.g. 8.75">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Academic Status</label>
+                            <select id="studentStatus" class="form-control">
+                                <option value="Active">Active</option>
+                                <option value="On Leave">On Leave</option>
+                                <option value="Graduated">Graduated</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Gender</label>
+                            <select id="studentGender" class="form-control">
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Emergency Contact Phone</label>
+                            <input type="text" id="studentEmergency" class="form-control" placeholder="Parent / Guardian phone">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Residential Address</label>
+                            <input type="text" id="studentAddress" class="form-control" placeholder="Street, City, Postal Code">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-close-modal="studentModal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Student</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 2. Student Profile View Modal -->
+    <div id="studentDetailModal" class="modal-overlay">
+        <div class="modal-container modal-lg animate-scale-up">
+            <div class="modal-header">
+                <h3 class="modal-title">Student Profile Dossier</h3>
+                <button class="modal-close-btn" data-close-modal="studentDetailModal">&times;</button>
+            </div>
+            <div class="modal-body" id="studentDetailContent"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-close-modal="studentDetailModal">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Faculty Create / Edit Modal -->
+    <div id="facultyModal" class="modal-overlay">
+        <div class="modal-container modal-lg animate-scale-up">
+            <div class="modal-header">
+                <h3 id="facultyModalTitle" class="modal-title">Add Faculty Member</h3>
+                <button class="modal-close-btn" data-close-modal="facultyModal">&times;</button>
+            </div>
+            <form id="facultyForm">
+                <div class="modal-body">
+                    <input type="hidden" id="facultyEditId">
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label required">Full Name & Title</label>
+                            <input type="text" id="facultyName" class="form-control" placeholder="e.g. Dr. Rajesh Sundaram" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label required">Official Email</label>
+                            <input type="email" id="facultyEmail" class="form-control" placeholder="e.g. r.sundaram@college.edu" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Phone Number</label>
+                            <input type="text" id="facultyPhone" class="form-control" placeholder="e.g. +91 98234 56780">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label required">Department</label>
+                            <select id="facultyDepartment" class="form-control" required>
+                                <option value="Computer Science">Computer Science</option>
+                                <option value="Electrical Engineering">Electrical Engineering</option>
+                                <option value="Mechanical Engineering">Mechanical Engineering</option>
+                                <option value="Civil Engineering">Civil Engineering</option>
+                                <option value="Business Administration">Business Administration</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label required">Designation</label>
+                            <select id="facultyDesignation" class="form-control" required>
+                                <option value="Professor & HOD">Professor & HOD</option>
+                                <option value="Associate Professor">Associate Professor</option>
+                                <option value="Assistant Professor">Assistant Professor</option>
+                                <option value="Lecturer">Lecturer</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Highest Qualification</label>
+                            <input type="text" id="facultyQualification" class="form-control" placeholder="e.g. Ph.D. in Computer Science">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Experience (Years)</label>
+                            <input type="number" id="facultyExperience" class="form-control" min="0" placeholder="e.g. 10">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Office / Room No.</label>
+                            <input type="text" id="facultyOffice" class="form-control" placeholder="e.g. CS-Block Room 302">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Status</label>
+                            <select id="facultyStatus" class="form-control">
+                                <option value="Active">Active</option>
+                                <option value="On Sabbatical">On Sabbatical</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Date of Joining</label>
+                            <input type="date" id="facultyJoiningDate" class="form-control">
+                        </div>
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <label class="form-label">Specialization / Taught Subjects</label>
+                            <input type="text" id="facultySpecialization" class="form-control" placeholder="e.g. Artificial Intelligence, Distributed Systems">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-close-modal="facultyModal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Faculty</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 4. Faculty Profile View Modal -->
+    <div id="facultyDetailModal" class="modal-overlay">
+        <div class="modal-container modal-lg animate-scale-up">
+            <div class="modal-header">
+                <h3 class="modal-title">Faculty Member Profile</h3>
+                <button class="modal-close-btn" data-close-modal="facultyDetailModal">&times;</button>
+            </div>
+            <div class="modal-body" id="facultyDetailContent"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-close-modal="facultyDetailModal">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. Inventory Create / Edit Modal -->
+    <div id="inventoryModal" class="modal-overlay">
+        <div class="modal-container modal-lg animate-scale-up">
+            <div class="modal-header">
+                <h3 id="inventoryModalTitle" class="modal-title">Add Inventory Asset</h3>
+                <button class="modal-close-btn" data-close-modal="inventoryModal">&times;</button>
+            </div>
+            <form id="inventoryForm">
+                <div class="modal-body">
+                    <input type="hidden" id="inventoryEditId">
+                    
+                    <div class="form-grid">
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <label class="form-label required">Item / Asset Name</label>
+                            <input type="text" id="inventoryName" class="form-control" placeholder="e.g. Dell OptiPlex 7090 Desktop PC" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label required">Category</label>
+                            <select id="inventoryCategory" class="form-control" required>
+                                <option value="Electronics & Computing">Electronics & Computing</option>
+                                <option value="Lab Equipment">Lab Equipment</option>
+                                <option value="Furniture">Furniture</option>
+                                <option value="Sports Equipment">Sports Equipment</option>
+                                <option value="Stationery & Books">Stationery & Books</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label required">Location / Room No.</label>
+                            <input type="text" id="inventoryLocation" class="form-control" placeholder="e.g. Computer Lab 3 (CS Dept)" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label required">Total Quantity</label>
+                            <input type="number" id="inventoryTotalQty" class="form-control" min="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label required">Available in Stock</label>
+                            <input type="number" id="inventoryAvailQty" class="form-control" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label required">Min. Reorder Threshold</label>
+                            <input type="number" id="inventoryMinThreshold" class="form-control" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Current Condition</label>
+                            <select id="inventoryCondition" class="form-control">
+                                <option value="Good">Good</option>
+                                <option value="Fair">Fair</option>
+                                <option value="Needs Repair">Needs Repair</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Unit Cost (₹)</label>
+                            <input type="number" id="inventoryUnitCost" class="form-control" min="0" placeholder="e.g. 65000">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Supplier / Vendor</label>
+                            <input type="text" id="inventorySupplier" class="form-control" placeholder="e.g. Dell Enterprise Solutions">
+                        </div>
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <label class="form-label">Specifications & Technical Notes</label>
+                            <textarea id="inventoryNotes" class="form-control" placeholder="Detailed hardware specs, serial number notes, or usage instructions"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-close-modal="inventoryModal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Asset</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 6. Inventory Quick Stock Adjustment Modal -->
+    <div id="stockAdjustModal" class="modal-overlay">
+        <div class="modal-container modal-sm animate-scale-up">
+            <div class="modal-header">
+                <h3 class="modal-title">⚡ Quick Stock Action</h3>
+                <button class="modal-close-btn" data-close-modal="stockAdjustModal">&times;</button>
+            </div>
+            <form id="stockAdjustForm">
+                <div class="modal-body">
+                    <input type="hidden" id="adjustItemId">
+                    <div style="margin-bottom: 1rem; padding: 0.75rem; background-color: var(--bg-tertiary); border-radius: var(--radius-md);">
+                        <div id="adjustItemNameDisplay" class="font-bold text-sm"></div>
+                        <div id="adjustItemCurrentAvail" class="text-xs text-muted"></div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 0.85rem;">
+                        <label class="form-label required">Action Type</label>
+                        <select id="adjustActionType" class="form-control" required>
+                            <option value="issue">Issue / Check-Out (-)</option>
+                            <option value="restock">Restock / Add Quantity (+)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 0.85rem;">
+                        <label class="form-label required">Quantity</label>
+                        <input type="number" id="adjustQuantity" class="form-control" min="1" value="1" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Reason / Log Reference</label>
+                        <input type="text" id="adjustReason" class="form-control" placeholder="e.g. Issued for Lab 3 Exam session">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-close-modal="stockAdjustModal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Apply Stock Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 7. Task Create / Edit Modal -->
+    <div id="taskModal" class="modal-overlay">
+        <div class="modal-container modal-lg animate-scale-up">
+            <div class="modal-header">
+                <h3 id="taskModalTitle" class="modal-title">Create Academic Task</h3>
+                <button class="modal-close-btn" data-close-modal="taskModal">&times;</button>
+            </div>
+            <form id="taskForm">
+                <div class="modal-body">
+                    <input type="hidden" id="taskEditId">
+                    
+                    <div class="form-grid">
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <label class="form-label required">Task Title</label>
+                            <input type="text" id="taskTitle" class="form-control" placeholder="e.g. Mid-Semester Exam Paper Moderation" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label required">Assigned To</label>
+                            <input type="text" id="taskAssignedTo" class="form-control" placeholder="Faculty / Staff name" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label required">Category</label>
+                            <select id="taskCategory" class="form-control" required>
+                                <option value="Academic">Academic</option>
+                                <option value="Exam">Exam</option>
+                                <option value="Administrative">Administrative</option>
+                                <option value="Maintenance">Maintenance</option>
+                                <option value="Event">Event</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label required">Priority</label>
+                            <select id="taskPriority" class="form-control" required>
+                                <option value="High">High</option>
+                                <option value="Medium">Medium</option>
+                                <option value="Low">Low</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label required">Due Date</label>
+                            <input type="date" id="taskDueDate" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Status</label>
+                            <select id="taskStatus" class="form-control">
+                                <option value="Pending">Pending</option>
+                                <option value="In Progress">In Progress</option>
+                                <option value="Completed">Completed</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <label class="form-label">Description & Action Items</label>
+                            <textarea id="taskDescription" class="form-control" placeholder="Detailed workflow requirements and completion criteria"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-close-modal="taskModal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Task</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 8. Assignment Create / Edit Modal -->
+    <div id="assignmentModal" class="modal-overlay">
+        <div class="modal-container modal-lg animate-scale-up">
+            <div class="modal-header">
+                <h3 id="assignmentModalTitle" class="modal-title">Publish Course Assignment</h3>
+                <button class="modal-close-btn" data-close-modal="assignmentModal">&times;</button>
+            </div>
+            <form id="assignmentForm">
+                <div class="modal-body">
+                    <input type="hidden" id="assignmentEditId">
+                    <input type="hidden" id="assignmentSubmittedCount">
+                    
+                    <div class="form-grid">
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <label class="form-label required">Assignment Title</label>
+                            <input type="text" id="assignmentTitle" class="form-control" placeholder="e.g. Distributed Key-Value Store Implementation" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label required">Course Code</label>
+                            <input type="text" id="assignmentCourseCode" class="form-control" placeholder="e.g. CS601" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Course Subject Name</label>
+                            <input type="text" id="assignmentCourseName" class="form-control" placeholder="e.g. Distributed Systems & Cloud Computing">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label required">Faculty Instructor</label>
+                            <input type="text" id="assignmentFacultyName" class="form-control" placeholder="e.g. Dr. Rajesh Sundaram" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label required">Target Department</label>
+                            <select id="assignmentDepartment" class="form-control" required>
+                                <option value="Computer Science">Computer Science</option>
+                                <option value="Electrical Engineering">Electrical Engineering</option>
+                                <option value="Mechanical Engineering">Mechanical Engineering</option>
+                                <option value="Civil Engineering">Civil Engineering</option>
+                                <option value="Business Administration">Business Administration</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Year of Study</label>
+                            <select id="assignmentYear" class="form-control">
+                                <option value="1st Year">1st Year</option>
+                                <option value="2nd Year">2nd Year</option>
+                                <option value="3rd Year">3rd Year</option>
+                                <option value="4th Year">4th Year</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Semester</label>
+                            <select id="assignmentSemester" class="form-control">
+                                <option value="1st Semester">1st Semester</option>
+                                <option value="2nd Semester">2nd Semester</option>
+                                <option value="3rd Semester">3rd Semester</option>
+                                <option value="4th Semester">4th Semester</option>
+                                <option value="5th Semester">5th Semester</option>
+                                <option value="6th Semester">6th Semester</option>
+                                <option value="7th Semester">7th Semester</option>
+                                <option value="8th Semester">8th Semester</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label required">Submission Due Date</label>
+                            <input type="date" id="assignmentDueDate" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label required">Maximum Marks</label>
+                            <input type="number" id="assignmentTotalMarks" class="form-control" min="1" value="50" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label required">Expected Class Strength</label>
+                            <input type="number" id="assignmentMaxSubmissions" class="form-control" min="1" value="60" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Status</label>
+                            <select id="assignmentStatus" class="form-control">
+                                <option value="Active">Active</option>
+                                <option value="Closed">Closed</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <label class="form-label">Problem Statement & Submission Guidelines</label>
+                            <textarea id="assignmentDescription" class="form-control" placeholder="Instructions, code requirements, and grading criteria"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-close-modal="assignmentModal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Publish Assignment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification Stack Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Application JavaScript Scripts -->
+    <script src="js/data.js"></script>
+    <script src="js/utils/helpers.js"></script>
+    <script src="js/utils/charts.js"></script>
+    <script src="js/modules/dashboard.js"></script>
+    <script src="js/modules/students.js"></script>
+    <script src="js/modules/faculty.js"></script>
+    <script src="js/modules/inventory.js"></script>
+    <script src="js/modules/tasks.js"></script>
+    <script src="js/modules/assignments.js"></script>
+    <script src="js/modules/data-manager.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,209 @@
+/**
+ * Design Tokens & Core Theme Styles
+ * Supports Modern Light & Dark Themes with high contrast & smooth transitions.
+ */
+
+:root {
+    /* Color Palette - Light Mode */
+    --bg-primary: #f8fafc;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #f1f5f9;
+    --bg-card: #ffffff;
+    --bg-hover: #f1f5f9;
+    --bg-active: #e2e8f0;
+    
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #94a3b8;
+    --text-white: #ffffff;
+
+    --border-color: #e2e8f0;
+    --border-light: #f1f5f9;
+    
+    /* Brand Accents */
+    --primary: #4f46e5;
+    --primary-hover: #4338ca;
+    --primary-light: #eef2ff;
+    --primary-text: #4338ca;
+
+    --secondary: #0ea5e9;
+    --secondary-hover: #0284c7;
+    --secondary-light: #f0f9ff;
+
+    --success: #10b981;
+    --success-hover: #059669;
+    --success-light: #ecfdf5;
+    --success-text: #065f46;
+
+    --warning: #f59e0b;
+    --warning-hover: #d97706;
+    --warning-light: #fffbeb;
+    --warning-text: #92400e;
+
+    --danger: #ef4444;
+    --danger-hover: #dc2626;
+    --danger-light: #fef2f2;
+    --danger-text: #991b1b;
+
+    --info: #3b82f6;
+    --info-light: #eff6ff;
+    --info-text: #1e40af;
+
+    /* Elevation & Shadows */
+    --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.06);
+
+    /* Radii */
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --radius-xl: 20px;
+    --radius-full: 9999px;
+
+    /* Transitions */
+    --transition-fast: 0.15s ease;
+    --transition-normal: 0.25s ease;
+    --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Layout Dimensions */
+    --sidebar-width: 260px;
+    --sidebar-collapsed-width: 78px;
+    --header-height: 68px;
+}
+
+[data-theme="dark"] {
+    --bg-primary: #0b0f19;
+    --bg-secondary: #111827;
+    --bg-tertiary: #1f2937;
+    --bg-card: #131b2e;
+    --bg-hover: #1e293b;
+    --bg-active: #334155;
+
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --text-muted: #64748b;
+    --text-white: #ffffff;
+
+    --border-color: #1e293b;
+    --border-light: #243049;
+
+    --primary: #6366f1;
+    --primary-hover: #4f46e5;
+    --primary-light: rgba(99, 102, 241, 0.15);
+    --primary-text: #a5b4fc;
+
+    --secondary: #38bdf8;
+    --secondary-hover: #0ea5e9;
+    --secondary-light: rgba(56, 189, 248, 0.15);
+
+    --success: #34d399;
+    --success-hover: #10b981;
+    --success-light: rgba(52, 211, 153, 0.15);
+    --success-text: #6ee7b7;
+
+    --warning: #fbbf24;
+    --warning-hover: #f59e0b;
+    --warning-light: rgba(251, 191, 36, 0.15);
+    --warning-text: #fde68a;
+
+    --danger: #f87171;
+    --danger-hover: #ef4444;
+    --danger-light: rgba(248, 113, 113, 0.15);
+    --danger-text: #fca5a5;
+
+    --info: #60a5fa;
+    --info-light: rgba(96, 165, 250, 0.15);
+    --info-text: #93c5fd;
+
+    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.6);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.7);
+}
+
+/* Base Resets */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    transition: background-color var(--transition-normal), color var(--transition-normal);
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button {
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background: none;
+}
+
+input, select, textarea {
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: inherit;
+}
+
+/* Typography Utilities */
+.font-bold { font-weight: 700; }
+.font-semibold { font-weight: 600; }
+.font-medium { font-weight: 500; }
+.font-regular { font-weight: 400; }
+
+.text-xs { font-size: 0.75rem; }
+.text-sm { font-size: 0.875rem; }
+.text-base { font-size: 1rem; }
+.text-lg { font-size: 1.125rem; }
+.text-xl { font-size: 1.25rem; }
+.text-2xl { font-size: 1.5rem; }
+
+.text-muted { color: var(--text-muted); }
+.text-secondary { color: var(--text-secondary); }
+.text-primary { color: var(--primary); }
+.text-success { color: var(--success); }
+.text-warning { color: var(--warning); }
+.text-danger { color: var(--danger); }
+
+/* Animation Keyframes */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInRight {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes scaleUp {
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.animate-fade-in {
+    animation: fadeIn var(--transition-smooth) forwards;
+}
+
+.animate-slide-in {
+    animation: slideInRight var(--transition-smooth) forwards;
+}
+
+.animate-scale-up {
+    animation: scaleUp var(--transition-smooth) forwards;
+}
